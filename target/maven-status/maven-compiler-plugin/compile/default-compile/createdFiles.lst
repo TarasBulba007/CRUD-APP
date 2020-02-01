@@ -1,0 +1,6 @@
+DAO\UserJdbcDAO.class
+userHibernateDAO\UserHibernateDAO.class
+util\DBHelper.class
+service\UserService.class
+DAO\UserDAO.class
+model\User.class
