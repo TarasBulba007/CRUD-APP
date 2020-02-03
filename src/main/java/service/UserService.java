@@ -3,7 +3,7 @@ package service;
 
 import model.User;
 import org.hibernate.SessionFactory;
-import userHibernateDAO.UserHibernateDAO;
+import DAO.UserHibernateDAO;
 import util.DBHelper;
 
 import java.util.List;

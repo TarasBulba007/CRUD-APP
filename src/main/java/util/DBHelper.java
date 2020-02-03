@@ -27,9 +27,10 @@ public class DBHelper {
         configuration.setProperty("hibernate.connection.url", "jdbc:mysql://localhost:3306/preproject");
         configuration.setProperty("hibernate.connection.username", "root");
         configuration.setProperty("hibernate.connection.password", "HfpdjlLtdeitrjn25lj33");
+        configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         configuration.setProperty("hibernate.show_sql", "true");
-        configuration.setProperty("hibernate.hbm2ddl.auto", "create");
-        configuration.setProperty("packagesToScan", "com.hibernate.entity");
+        configuration.setProperty("hibernate.format_sql", "true");
+
         configuration.setProperty("hibernate.current_session_context_class", "thread");
         return configuration;
     }
