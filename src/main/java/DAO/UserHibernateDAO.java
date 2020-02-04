@@ -3,52 +3,47 @@ package DAO;
 import model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionException;
+import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import util.DBHelper;
 
-import javax.persistence.criteria.CriteriaQuery;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserHibernateDAO  {
 
-    private Session session;
+    private SessionFactory sessionFactory;
 
-    public UserHibernateDAO(Session session) {
-        this.session = session;
+    public UserHibernateDAO() {
+        this.sessionFactory = DBHelper.getSessionFactory();
     }
 
     public void createUser(User user) {
-        try {
+        try (Session session = sessionFactory.getCurrentSession()){
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 
     public User getUserById(int id) {
         User user = null;
-        try {
-            session.beginTransaction();
-            //user = session.get(User.class, id);
+        try (  Session session = sessionFactory.openSession()){
             Query query = session.createQuery("SELECT i from " + User.class.getName() + " i " + " WHERE i.id=:id");
             query.setParameter("id", id);
             user = (User) query.uniqueResult();
-            session.getTransaction().commit();
+        //    session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
-        } finally {
-            session.close();
         }
         return user;
     }
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        try {
+        try (  Session session = sessionFactory.openSession()) {
             session.beginTransaction();
           // CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder().createQuery(User.class);
           // criteriaQuery.from(User.class);
@@ -57,27 +52,23 @@ public class UserHibernateDAO  {
             session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
-        } finally {
-            session.close();
         }
         return users;
     }
 
 
     public void updateUser(User user) {
-        try {
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             session.saveOrUpdate(user);
             session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 
     public void deleteUser(int id) {
-        try {
+        try (Session session = sessionFactory.getCurrentSession()){
             session.beginTransaction();
           //  User user = session.get(User.class, id);
           //  session.delete(user);
@@ -87,20 +78,16 @@ public class UserHibernateDAO  {
             session.getTransaction().commit();
         } catch(SessionException e) {
             e.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 
     public void deleteAllUsers() {
-        try {
+        try (Session session = sessionFactory.getCurrentSession()){
             session.beginTransaction();
             session.createQuery("DELETE FROM " + User.class.getName()).executeUpdate();
             session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
-        } finally {
-            session.close();
         }
     }
 }

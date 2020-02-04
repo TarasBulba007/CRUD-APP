@@ -8,52 +8,54 @@ import util.DBHelper;
 
 import java.util.List;
 
-public class UserService  {
+public class UserService implements UserServiceInterface {
 
     private static UserService userService;
 
-    private SessionFactory sessionFactory;
-
-    public UserService(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
-
     public static UserService getUserService(){
         if (userService == null) {
-            userService = new UserService(DBHelper.getSessionFactory());
+            userService = new UserService();
         }
         return userService;
     }
 
+    UserHibernateDAO hibernateDAO = null;
+    private UserHibernateDAO getHibernateDAO() {
+        if (hibernateDAO == null){
+            hibernateDAO = new UserHibernateDAO();
+        }
+        return hibernateDAO;
+    }
+
+    UserHibernateDAO dao = getHibernateDAO();
+
+    @Override
     public void createUser(User user) {
-       UserHibernateDAO dao = new UserHibernateDAO(sessionFactory.getCurrentSession());
         dao.createUser(user);
     }
 
+    @Override
     public User getUserById(int id) {
-        UserHibernateDAO dao = new UserHibernateDAO(sessionFactory.getCurrentSession());
         return dao.getUserById(id);
     }
 
+    @Override
     public List<User> getAllUsers() {
-        UserHibernateDAO dao = new UserHibernateDAO(sessionFactory.getCurrentSession());
         return dao.getAllUsers();
     }
 
+    @Override
     public void updateUser(User user) {
-        UserHibernateDAO dao = new UserHibernateDAO(sessionFactory.getCurrentSession());
         dao.updateUser(user);
     }
 
+    @Override
     public void deleteUser(int id) {
-        UserHibernateDAO dao = new UserHibernateDAO(sessionFactory.openSession());
         dao.deleteUser(id);
     }
 
+    @Override
     public void deleteAllUsers() {
-        UserHibernateDAO dao = new UserHibernateDAO(sessionFactory.getCurrentSession());
         dao.deleteAllUsers();
     }
-
-
 }
