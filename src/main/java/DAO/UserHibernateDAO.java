@@ -10,12 +10,20 @@ import util.DBHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserHibernateDAO  {
+public class UserHibernateDAO implements UserDAO {
 
+    private static UserHibernateDAO hibernateDAO;
     private SessionFactory sessionFactory;
 
     public UserHibernateDAO() {
         this.sessionFactory = DBHelper.getSessionFactory();
+    }
+
+    public static UserHibernateDAO getHibernateDAO() {
+        if (hibernateDAO == null){
+            hibernateDAO = new UserHibernateDAO();
+        }
+        return hibernateDAO;
     }
 
     public void createUser(User user) {
@@ -49,7 +57,7 @@ public class UserHibernateDAO  {
           // criteriaQuery.from(User.class);
           // users = session.createQuery(criteriaQuery).getResultList();
              users = session.createQuery("from " + User.class.getName()).list();
-            session.getTransaction().commit();
+//            session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
         }
@@ -74,7 +82,7 @@ public class UserHibernateDAO  {
           //  session.delete(user);
             Query query = session.createQuery("DELETE FROM " + User.class.getName() + " i " + "WHERE i.id=:id");
             query.setParameter("id", id);
-            query.executeUpdate();
+           query.executeUpdate();
             session.getTransaction().commit();
         } catch(SessionException e) {
             e.printStackTrace();

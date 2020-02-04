@@ -95,8 +95,8 @@ public class UserJdbcDAO implements UserDAO {
     }
 
     @Override
-    public boolean updateUser(User user)  {
-        boolean updated = false;
+    public void updateUser(User user)  {
+      //  boolean updated = false;
         try (PreparedStatement statement = getServerConnection().prepareStatement("UPDATE users SET login=?, name=?, email=?, phoneNumber=?, STR_TO_DATE(birthDate, 'dd.MM.yyyy')=? WHERE id=?");) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getName());
@@ -104,11 +104,11 @@ public class UserJdbcDAO implements UserDAO {
             statement.setString(4, user.getPhoneNumber());
             statement.setDate(5, java.sql.Date.valueOf(user.getBirthDate()));
             statement.setInt(6, user.getId());
-            updated = statement.executeUpdate() > 0;
+            statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
         }
-        return updated;
+      //  return updated;
     }
 
     /**
@@ -134,15 +134,13 @@ public class UserJdbcDAO implements UserDAO {
      */
 
     @Override
-    public boolean deleteUser(int id)  {
-        boolean del = false;
+    public void deleteUser(int id)  {
         try (PreparedStatement statement = getServerConnection().prepareStatement("DELETE FROM users WHERE id=?");) {
             statement.setInt(1, id);
-            del = statement.executeUpdate() > 0;
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return del;
     }
 
     @Override

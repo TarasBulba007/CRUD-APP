@@ -1,6 +1,7 @@
 package service;
 
 
+import DAO.UserDAO;
 import model.User;
 import org.hibernate.SessionFactory;
 import DAO.UserHibernateDAO;
@@ -19,15 +20,7 @@ public class UserService implements UserServiceInterface {
         return userService;
     }
 
-    UserHibernateDAO hibernateDAO = null;
-    private UserHibernateDAO getHibernateDAO() {
-        if (hibernateDAO == null){
-            hibernateDAO = new UserHibernateDAO();
-        }
-        return hibernateDAO;
-    }
-
-    UserHibernateDAO dao = getHibernateDAO();
+    UserDAO dao = UserHibernateDAO.getHibernateDAO();
 
     @Override
     public void createUser(User user) {
