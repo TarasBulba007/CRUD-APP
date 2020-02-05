@@ -1,13 +1,13 @@
 package service;
 
 
-import DAO.UserDAO;
+import DAO.*;
 import model.User;
 import org.hibernate.SessionFactory;
-import DAO.UserHibernateDAO;
 import util.DBHelper;
 
 import java.util.List;
+import java.util.Properties;
 
 public class UserService implements UserServiceInterface {
 
@@ -20,7 +20,12 @@ public class UserService implements UserServiceInterface {
         return userService;
     }
 
-    UserDAO dao = UserHibernateDAO.getHibernateDAO();
+    Properties prop = new Properties();
+    String property = prop.getProperty("key");
+    java.util.logging.Logger.
+
+    UserDaoFactory daos =  createDAO(property);
+    UserDAO dao = daos.createDAO();
 
     @Override
     public void createUser(User user) {
@@ -50,5 +55,15 @@ public class UserService implements UserServiceInterface {
     @Override
     public void deleteAllUsers() {
         dao.deleteAllUsers();
+    }
+
+    static UserDaoFactory createDAO(String property) {
+        if (property.equalsIgnoreCase("hibernate")) {
+            return new UserHibernateDaoFactory();
+        } else if (property.equalsIgnoreCase("jdbc")) {
+            return new UserJdbcDaoFactory();
+        } else {
+            throw new RuntimeException("unknown factory");
+        }
     }
 }
