@@ -26,6 +26,7 @@ public class UserHibernateDAO implements UserDAO {
         return hibernateDAO;
     }
 
+    @Override
     public void createUser(User user) {
         try (Session session = sessionFactory.getCurrentSession()){
             session.beginTransaction();
@@ -36,10 +37,11 @@ public class UserHibernateDAO implements UserDAO {
         }
     }
 
+    @Override
     public User getUserById(int id) {
         User user = null;
         try (  Session session = sessionFactory.openSession()){
-            Query query = session.createQuery("SELECT i from " + User.class.getName() + " i " + " WHERE i.id=:id");
+            Query query = session.createQuery("SELECT i from " + User.class.getName() + " i WHERE i.id=:id");
             query.setParameter("id", id);
             user = (User) query.uniqueResult();
         //    session.getTransaction().commit();
@@ -49,6 +51,7 @@ public class UserHibernateDAO implements UserDAO {
         return user;
     }
 
+    @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
         try (  Session session = sessionFactory.openSession()) {
@@ -64,7 +67,7 @@ public class UserHibernateDAO implements UserDAO {
         return users;
     }
 
-
+    @Override
     public void updateUser(User user) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
@@ -76,19 +79,20 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     public void deleteUser(int id) {
-        try (Session session = sessionFactory.getCurrentSession()){
+        try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
-          //  User user = session.get(User.class, id);
-          //  session.delete(user);
-            Query query = session.createQuery("DELETE FROM " + User.class.getName() + " i " + "WHERE i.id=:id");
+            //  User user = session.get(User.class, id);
+            //  session.delete(user);
+            Query query = session.createQuery("DELETE FROM " + User.class.getName() + " i WHERE i.id=:id");
             query.setParameter("id", id);
-           query.executeUpdate();
+            query.executeUpdate();
             session.getTransaction().commit();
-        } catch(SessionException e) {
-            e.printStackTrace();
+        } catch (SessionException e) {
+
         }
     }
 
+    @Override
     public void deleteAllUsers() {
         try (Session session = sessionFactory.getCurrentSession()){
             session.beginTransaction();
