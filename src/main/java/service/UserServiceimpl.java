@@ -21,9 +21,7 @@ public class UserServiceImpl implements UserService {
     ResourceBundle prop = ResourceBundle.getBundle("property");
    private String property = prop.getString("connection.type");
 
-
-    private UserDaoFactory daos =  createDaoFactory(property);
-    private UserDAO dao = daos.createDAO();
+    private UserDAO dao = UserDaoFactoryIml.createDao(property);
 
     @Override
     public void createUser(User user) {
@@ -55,14 +53,5 @@ public class UserServiceImpl implements UserService {
         dao.deleteAllUsers();
     }
 
-    private static UserDaoFactory createDaoFactory(String property) {
-        System.out.println(property);
-        if (property.equalsIgnoreCase("hibernate")) {
-            return new UserHibernateDaoFactory();
-        } else if (property.equalsIgnoreCase("jdbc")) {
-            return new UserJdbcDaoFactory();
-        } else {
-            throw new RuntimeException("unknown factory");
-        }
-    }
+
 }
