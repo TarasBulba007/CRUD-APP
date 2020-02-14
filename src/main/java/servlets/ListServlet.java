@@ -16,9 +16,9 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet("/")
+@WebServlet("/admin")
 
-public class ControllerServlet extends HttpServlet {
+public class ListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private UserService service;
 
@@ -45,7 +45,7 @@ public class ControllerServlet extends HttpServlet {
             System.out.println(el);
         }
         request.setAttribute("users", users);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user-list.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("admin/user-list.jsp");
 
         dispatcher.forward(request, response);
     }

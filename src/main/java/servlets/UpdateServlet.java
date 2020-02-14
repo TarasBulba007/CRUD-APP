@@ -36,13 +36,15 @@ public class UpdateServlet extends HttpServlet {
     }
 
     private void updateUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ParseException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter("id"));
         String login = request.getParameter("login");
+        String password = request.getParameter("password");
         String name = request.getParameter("name");
+        String role = request.getParameter("role");
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
         LocalDate birthDate = LocalDate.parse(request.getParameter("birthDate"));
-        User var = new User(id, login, name, email, phoneNumber, birthDate);
+        User var = new User(id, login, password, name, role, email, phoneNumber, birthDate);
         System.out.println(var.getBirthDate());
         service.updateUser(var);
         response.sendRedirect("list");

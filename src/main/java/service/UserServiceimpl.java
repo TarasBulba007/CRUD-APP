@@ -53,5 +53,10 @@ public class UserServiceImpl implements UserService {
         dao.deleteAllUsers();
     }
 
+    @Override
+    public User findUser(String name, String password) {
+        return dao.findUser(name, password);
+    }
+
 
 }

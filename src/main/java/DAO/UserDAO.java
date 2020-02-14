@@ -15,5 +15,7 @@ public interface UserDAO {
 
     void deleteUser(int id);
     void deleteAllUsers();
+
+    User findUser(String userName, String password);
 }
 

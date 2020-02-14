@@ -11,10 +11,16 @@ public class User {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @Column(name="login")
     private String login;
+
+    @Column(name="password")
+    private String password;
+
+    @Column(name="role")
+    private String role;
 
     @Column(name="name")
     private String name;
@@ -31,28 +37,32 @@ public class User {
     public User(){
     }
 
-    public User(int id, String login, String name, String email, String phoneNumber, LocalDate birthDate) {
+    public User(Long id, String login, String password, String role, String name, String email, String phoneNumber, LocalDate birthDate) {
         this.id = id;
         this.login = login;
+        this.password = password;
+        this.role = role;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
     }
 
-    public User(String login, String name, String email, String phoneNumber, LocalDate birthDate) {
+    public User(String login, String password, String role, String name, String email, String phoneNumber, LocalDate birthDate) {
         this.login = login;
+        this.password = password;
+        this.role = role;
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -62,6 +72,22 @@ public class User {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getName() {
@@ -101,16 +127,17 @@ public class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return getId() == user.getId() &&
+        return Objects.equals(getId(), user.getId()) &&
                 Objects.equals(getLogin(), user.getLogin()) &&
+                Objects.equals(getPassword(), user.getPassword()) &&
+                Objects.equals(getRole(), user.getRole()) &&
                 Objects.equals(getName(), user.getName()) &&
                 Objects.equals(getEmail(), user.getEmail()) &&
-                Objects.equals(getPhoneNumber(), user.getPhoneNumber()) &&
-                Objects.equals(getBirthDate(), user.getBirthDate());
+                Objects.equals(getPhoneNumber(), user.getPhoneNumber());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLogin(), getName(), getEmail(), getPhoneNumber(), getBirthDate());
+        return Objects.hash(getId(), getLogin(), getPassword(), getRole(), getName(), getEmail(), getPhoneNumber(), getBirthDate());
     }
 }

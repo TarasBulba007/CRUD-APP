@@ -51,7 +51,12 @@
                         <label>User Login</label> <input type="text" value="<c:out value='${user.login}' />" class="form-control" name="login">
                     </fieldset>
 
-                    <fieldset class="form-group">
+                        <fieldset class="form-group">
+                            <label>User Password</label> <input type="text" value="<c:out value='${user.password}' />" class="form-control" name="password">
+                        </fieldset>
+
+
+                        <fieldset class="form-group">
                         <label>User Name</label> <input type="text" value="<c:out value='${user.name}' />" class="form-control" name="name">
                     </fieldset>
 

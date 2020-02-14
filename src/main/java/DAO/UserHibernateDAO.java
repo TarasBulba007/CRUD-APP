@@ -20,7 +20,7 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     public static UserHibernateDAO getHibernateDAO() {
-        if (hibernateDAO == null){
+        if (hibernateDAO == null) {
             hibernateDAO = new UserHibernateDAO();
         }
         return hibernateDAO;
@@ -28,7 +28,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public void createUser(User user) {
-        try (Session session = sessionFactory.getCurrentSession()){
+        try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
@@ -40,11 +40,11 @@ public class UserHibernateDAO implements UserDAO {
     @Override
     public User getUserById(int id) {
         User user = null;
-        try (  Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("SELECT i from " + User.class.getName() + " i WHERE i.id=:id");
             query.setParameter("id", id);
             user = (User) query.uniqueResult();
-        //    session.getTransaction().commit();
+            //    session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
         }
@@ -54,12 +54,12 @@ public class UserHibernateDAO implements UserDAO {
     @Override
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        try (  Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-          // CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder().createQuery(User.class);
-          // criteriaQuery.from(User.class);
-          // users = session.createQuery(criteriaQuery).getResultList();
-             users = session.createQuery("from " + User.class.getName()).list();
+            // CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder().createQuery(User.class);
+            // criteriaQuery.from(User.class);
+            // users = session.createQuery(criteriaQuery).getResultList();
+            users = session.createQuery("from " + User.class.getName()).list();
 //            session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
@@ -94,7 +94,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public void deleteAllUsers() {
-        try (Session session = sessionFactory.getCurrentSession()){
+        try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
             session.createQuery("DELETE FROM " + User.class.getName()).executeUpdate();
             session.getTransaction().commit();
@@ -102,4 +102,18 @@ public class UserHibernateDAO implements UserDAO {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public User findUser(String userName, String password) {
+        User user = null;
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("SELECT i from " + User.class.getName() + " i WHERE i.name=:name");
+            query.setParameter("name", userName);
+            user = (User) query.uniqueResult();
+        } catch (SessionException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
 }
+

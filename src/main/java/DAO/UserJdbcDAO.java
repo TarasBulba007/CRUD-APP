@@ -22,15 +22,19 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public void createUser(User user)  {
         try (
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(login, name, email, phoneNumber, birthDate) values(?,?,?,?,?) ")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO users(login, password, role, name, email, phoneNumber, birthDate) values(?,?,?,?,?,?,?) ")) {
             System.out.println("Create user: " +  user.getLogin() + " " + user.getName() + " " +" " + user.getEmail() + " " + user.getPhoneNumber());
             preparedStatement.setString(1, user.getLogin());
-            preparedStatement.setString(2, user.getName());
-            preparedStatement.setString(3, user.getEmail());
-            preparedStatement.setString(4, user.getPhoneNumber());
-            preparedStatement.setDate(5, java.sql.Date.valueOf(user.getBirthDate()));
-            //    java.sql.Date date = new java.sql.Date(user.getBirthDate().getDayOfYear());
-            //    preparedStatement.setDate(5, date);
+            preparedStatement.setString(2, user.getPassword());
+            if (user.getLogin().equalsIgnoreCase("admin")) {
+                preparedStatement.setString(3, "admin");
+            } else {
+                preparedStatement.setString(3, "user");
+            }
+            preparedStatement.setString(4, user.getName());
+            preparedStatement.setString(5, user.getEmail());
+            preparedStatement.setString(6, user.getPhoneNumber());
+            preparedStatement.setDate(7, java.sql.Date.valueOf(user.getBirthDate()));
             System.out.println(preparedStatement);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -41,18 +45,44 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public User getUserById(int id) {
         User user = null;
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, login, name, email, phoneNumber, birthDate FROM users WHERE id =?");) {
-            preparedStatement.setInt(1, id);
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, login, password, role, name, email, phoneNumber, birthDate FROM users WHERE id =?");) {
+            preparedStatement.setLong(1, id);
             ResultSet res = preparedStatement.executeQuery();
             while (res.next()) {
                 String login = res.getNString("login");
+                String password = res.getNString("password");
+                String role = res.getNString("role");
                 String name = res.getString("name");
                 String email = res.getString("email");
                 String phoneNumber = res.getString("phoneNumber");
                 LocalDate birthDate = res.getDate("birthDate").toLocalDate();
-                user = new User(id, login, name, email, phoneNumber, birthDate);
+                user = new User((long) id, login, password, role, name, email, phoneNumber, birthDate);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public User findUser(String userName, String password) {
+        User user = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, login, password, role, name, email, phoneNumber, birthDate FROM users WHERE name =?");){
+            preparedStatement.setNString(1, userName);
+            ResultSet res = preparedStatement.executeQuery();
+            while (res.next()) {
+                if (res.getNString("password").equals(password)) {
+                    String login = res.getNString("login");
+                    String role = res.getNString("role");
+                    String email = res.getString("email");
+                    String phoneNumber = res.getString("phoneNumber");
+                    LocalDate birthDate = res.getDate("birthDate").toLocalDate();
+                    user = new User(login, password, role, userName, email, phoneNumber, birthDate);
+                }
+                else {
+                    return null;
+                }
+            }
+        }catch (SQLException e) {
             e.printStackTrace();
         }
         return user;
@@ -65,13 +95,15 @@ public class UserJdbcDAO implements UserDAO {
             System.out.println(preparedStatement);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
+                Long id = rs.getLong("id");
                 String login = rs.getString("login");
+                String password = rs.getNString("password");
+                String role = rs.getNString("role");
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String phoneNumber = rs.getString("phoneNumber");
                 LocalDate birthDate = rs.getDate("birthDate").toLocalDate();
-                users.add(new User(id, login, name, email,phoneNumber, birthDate));
+                users.add(new User( id, login, password, role, name, email,phoneNumber, birthDate));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -82,13 +114,14 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public void updateUser(User user)  {
       //  boolean updated = false;
-        try (PreparedStatement statement = connection.prepareStatement("UPDATE users SET login=?, name=?, email=?, phoneNumber=?, STR_TO_DATE(birthDate, 'dd.MM.yyyy')=? WHERE id=?");) {
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE users SET login=?, password=?, name=?, email=?, phoneNumber=?, STR_TO_DATE(birthDate, 'dd.MM.yyyy')=? WHERE id=?");) {
             statement.setString(1, user.getLogin());
-            statement.setString(2, user.getName());
-            statement.setString(3, user.getEmail());
-            statement.setString(4, user.getPhoneNumber());
-            statement.setDate(5, java.sql.Date.valueOf(user.getBirthDate()));
-            statement.setInt(6, user.getId());
+            statement.setString(2, user.getPassword());
+            statement.setString(3, user.getName());
+            statement.setString(4, user.getEmail());
+            statement.setString(5, user.getPhoneNumber());
+            statement.setDate(6, java.sql.Date.valueOf(user.getBirthDate()));
+            statement.setLong(7, user.getId());
             statement.executeUpdate();
         } catch (SQLException e){
             e.printStackTrace();
@@ -140,7 +173,7 @@ public class UserJdbcDAO implements UserDAO {
 
     public void createTableUsers() throws SQLException {
         Statement statement = connection.createStatement();
-        statement.execute("CREATE TABLE users (id  int(3) NOT NULL AUTO_INCREMENT, login varchar(255) NOT NULL, name varchar(255) NOT NULL, email varchar(220) NOT NULL, phoneNumber varchar(120), birthDate DATE NOT NULL , PRIMARY KEY (id));");
+        statement.execute("CREATE TABLE users (id  LONG NOT NULL AUTO_INCREMENT, login varchar(255) NOT NULL, password varchar(255) NOT NULL , role varchar(60) NOT NULL , name varchar(255) NOT NULL, email varchar(220) NOT NULL, phoneNumber varchar(20), birthDate DATE NOT NULL , PRIMARY KEY (id));");
         statement.close();
     }
 

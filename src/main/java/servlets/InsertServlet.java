@@ -37,11 +37,13 @@ public class InsertServlet extends HttpServlet {
 
     private void insertUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException, ParseException {
         String login = request.getParameter("login");
+        String password = request.getParameter("password");
         String name = request.getParameter("name");
+        String role = request.getParameter("role");
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
         LocalDate birthDate = LocalDate.parse(request.getParameter("birthDate"));
-        User newUser = new User(login, name, email, phoneNumber, birthDate);
+        User newUser = new User(login, password, name, role, email, phoneNumber, birthDate);
         System.out.println("new USer: " + newUser.getId() + " " + newUser.getLogin() + " " + newUser.getName() + " " + newUser.getEmail() + " " + newUser.getBirthDate().toString());
         service.createUser(newUser);
         response.sendRedirect("list");
