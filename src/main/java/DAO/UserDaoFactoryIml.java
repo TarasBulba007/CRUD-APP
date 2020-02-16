@@ -2,7 +2,7 @@ package DAO;
 
 public class UserDaoFactoryIml {
 
-    public static UserDAO createDao(String property) {
+    public static UserDAO createDAO(String property) {
         System.out.println(property);
         if (property.equalsIgnoreCase("hibernate")) {
             return new UserHibernateDAO();
@@ -12,4 +12,5 @@ public class UserDaoFactoryIml {
             throw new RuntimeException("unknown factory");
         }
     }
+
 }

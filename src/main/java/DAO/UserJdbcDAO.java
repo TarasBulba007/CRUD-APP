@@ -43,7 +43,7 @@ public class UserJdbcDAO implements UserDAO {
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(Long id) {
         User user = null;
         try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, login, password, role, name, email, phoneNumber, birthDate FROM users WHERE id =?");) {
             preparedStatement.setLong(1, id);
@@ -56,7 +56,7 @@ public class UserJdbcDAO implements UserDAO {
                 String email = res.getString("email");
                 String phoneNumber = res.getString("phoneNumber");
                 LocalDate birthDate = res.getDate("birthDate").toLocalDate();
-                user = new User((long) id, login, password, role, name, email, phoneNumber, birthDate);
+                user = new User(id, login, password, role, name, email, phoneNumber, birthDate);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -81,6 +81,36 @@ public class UserJdbcDAO implements UserDAO {
                 else {
                     return null;
                 }
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    @Override
+    public boolean validateUser(String login, String password) throws SQLException {
+        User user = getUserByLogin(login);
+        if (user.getPassword().equals(password)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public User getUserByLogin(String login)  {
+        User user = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT id, password, role, name, email, phoneNumber, birthDate FROM users WHERE login =?");){
+        preparedStatement.setString(1, login);
+            ResultSet res = preparedStatement.executeQuery();
+            while (res.next()) {
+                    String password = res.getNString("password");
+                    String name = res.getNString("name");
+                    String role = res.getNString("role");
+                    String email = res.getString("email");
+                    String phoneNumber = res.getString("phoneNumber");
+                    LocalDate birthDate = res.getDate("birthDate").toLocalDate();
+                    user = new User(login, password, name, role, email, phoneNumber, birthDate);
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -152,9 +182,9 @@ public class UserJdbcDAO implements UserDAO {
      */
 
     @Override
-    public void deleteUser(int id)  {
+    public void deleteUser(Long id)  {
         try (PreparedStatement statement = connection.prepareStatement("DELETE FROM users WHERE id=?");) {
-            statement.setInt(1, id);
+            statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

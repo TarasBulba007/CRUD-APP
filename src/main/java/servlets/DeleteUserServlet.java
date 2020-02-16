@@ -33,7 +33,7 @@ public class DeleteUserServlet extends HttpServlet {
     }
 
     private void deleteUser(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
+        Long id = Long.parseLong(request.getParameter("id"));
         service.deleteUser(id);
         response.sendRedirect("list");
     }

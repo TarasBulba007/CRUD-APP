@@ -1,5 +1,5 @@
 package DAO;
 
 public interface UserDaoFactory {
-    UserDAO createDAO();
+    UserDAO createDAO(String property);
 }

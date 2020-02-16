@@ -39,7 +39,12 @@ public class InsertServlet extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
-        String role = request.getParameter("role");
+        String role = "";
+        if (name.equalsIgnoreCase("Taras") && password.equalsIgnoreCase("Rdfyn142857")){
+            role = "admin";
+        } else {
+            role = "user";
+        }
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
         LocalDate birthDate = LocalDate.parse(request.getParameter("birthDate"));

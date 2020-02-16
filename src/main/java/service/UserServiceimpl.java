@@ -4,6 +4,7 @@ package service;
 import DAO.*;
 import model.User;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -21,7 +22,7 @@ public class UserServiceImpl implements UserService {
     ResourceBundle prop = ResourceBundle.getBundle("property");
    private String property = prop.getString("connection.type");
 
-    private UserDAO dao = UserDaoFactoryIml.createDao(property);
+    private UserDAO dao = UserDaoFactoryIml.createDAO(property);
 
     @Override
     public void createUser(User user) {
@@ -29,7 +30,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(Long id) {
         return dao.getUserById(id);
     }
 
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         dao.deleteUser(id);
     }
 
@@ -58,5 +59,22 @@ public class UserServiceImpl implements UserService {
         return dao.findUser(name, password);
     }
 
+    @Override
+    public boolean validateUser(String login, String password)  {
+        try {
+            if (dao.validateUser(login, password)) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    @Override
+    public User getUserByLogin(String login) {
+        User user = null;
+        user = dao.getUserByLogin(login);
+        return user;
+    }
 }

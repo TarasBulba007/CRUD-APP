@@ -9,22 +9,47 @@
 </head>
 
 <body>
+
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: Green">
+        <div>
+            <a class="navbar-brand"> CRUD App </a>
+        </div>
+
+        <ul class="navbar-nav">
+            <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Users</a></li>
+        </ul>
+    </nav>
+</header>
 <br>
-<h1>Вход в систему</h1>
-<form action="Registration" method="post">
-    Пользователь: <input type="text" name="user" size="10"><br>
-    Пароль: <input type="password" name="password" size="10"><br>
-    <p>
-    <table>
-        <tr>
-            <th><small>
-                <input type="submit" name="login" value="SignIn">
-            </small>
-            <th><small>
-                <input type="submit" name="registration" value="SignUp">
-            </small>
-    </table>
-</form>
-<br>
+<div class="container col-md-5">
+    <div class="card">
+        <div class="card-body">
+            <c:if test="${user != null}">
+            <form action="update" method="post">
+                </c:if>
+                <c:if test="${user == null}">
+                <form action="insert" method="post">
+                    </c:if>
+
+
+                    <fieldset class="form-group">
+                        <label>User Login</label> <input type="text" value="<c:out value='${user.login}' />" class="form-control" name="login">
+                    </fieldset>
+
+                    <fieldset class="form-group">
+                        <label>User Password</label> <input type="text" value="<c:out value='${user.password}' />" class="form-control" name="password">
+                    </fieldset>
+
+                        <div class="container text-left">
+                            <a href="<%=request.getContextPath()%>/admin/menu.jsp" class="btn btn-success">SignIn</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="<%=request.getContextPath()%>/new" class="btn btn-success">SignUp</a>
+                        </div>
+                </form>
+        </div>
+    </div>
+</div>
 </body>
+
 </html>

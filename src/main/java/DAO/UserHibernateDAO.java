@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import util.DBHelper;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(Long id) {
         User user = null;
         try (Session session = sessionFactory.openSession()) {
             Query query = session.createQuery("SELECT i from " + User.class.getName() + " i WHERE i.id=:id");
@@ -78,7 +79,7 @@ public class UserHibernateDAO implements UserDAO {
         }
     }
 
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         try (Session session = sessionFactory.getCurrentSession()) {
             session.beginTransaction();
             //  User user = session.get(User.class, id);
@@ -110,6 +111,30 @@ public class UserHibernateDAO implements UserDAO {
             Query query = session.createQuery("SELECT i from " + User.class.getName() + " i WHERE i.name=:name");
             query.setParameter("name", userName);
             user = (User) query.uniqueResult();
+        } catch (SessionException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+
+    @Override
+    public boolean validateUser(String login, String password) throws SQLException {
+        User user = getUserByLogin(login);
+        if (user.getPassword().equals(password)) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public User getUserByLogin(String login) {
+        User user = null;
+        try (Session session = sessionFactory.openSession()) {
+            Query query = session.createQuery("SELECT i from " + User.class.getName() + " i WHERE i.login=:login");
+            query.setParameter("login", login);
+            user = (User) query.uniqueResult();
+            //    session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
         }

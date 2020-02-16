@@ -3,75 +3,50 @@ package servlets;
 import model.User;
 import service.UserService;
 import service.UserServiceImpl;
-import util.AppUtils;
 
-import java.io.IOException;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
-@WebServlet("/login")
+@WebServlet("/index")
 public class LoginServlet extends HttpServlet {
-    private static final long serialVersionUID = 1L;
     private UserService service;
 
     public void init() {
         service = UserServiceImpl.getUserService();
     }
 
-    public LoginServlet() {
-        super();
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        RequestDispatcher dispatcher //
-                = this.getServletContext().getRequestDispatcher("/loginView.jsp");
-
-        dispatcher.forward(request, response);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        String userName = request.getParameter("userName");
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String login = request.getParameter("login");
         String password = request.getParameter("password");
-        User userAccount = service.findUser(userName, password);
+        HttpSession session = request.getSession();
 
-        if (userAccount == null) {
-            String errorMessage = "Invalid userName or Password";
+        User user = service.getUserByLogin(login);
 
-            request.setAttribute("errorMessage", errorMessage);
-
-            RequestDispatcher dispatcher //
-                    = this.getServletContext().getRequestDispatcher("/loginView.jsp");
-
-            dispatcher.forward(request, response);
-            return;
-        }
-
-        AppUtils.storeLoginedUser(request.getSession(), userAccount);
-
-        //
-        int redirectId = -1;
-        try {
-            redirectId = Integer.parseInt(request.getParameter("redirectId"));
-        } catch (Exception e) {
-        }
-        String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
-        if (requestUri != null) {
-            response.sendRedirect(requestUri);
+        if (service.validateUser(login, password)) {
+            if (user.getRole().equals("user")) {
+                session.setAttribute("login", login);
+                session.setAttribute("role", user.getRole());
+                session.setAttribute("name", user.getName());
+                session.setAttribute("email", user.getEmail());
+                session.setAttribute("phoneNumber", user.getPhoneNumber());
+                session.setAttribute("birthDate", user.getBirthDate());
+                response.sendRedirect("user/userInfoView.jsp");
+            }
+            if (user.getRole().equals("admin")) {
+                response.sendRedirect("webapp/admin/user-list.jsp");
+            }
         } else {
-            response.sendRedirect(request.getContextPath() + "/userInfo");
+            response.sendRedirect(request.getContextPath() + "/InsertServlet");
         }
+    }
 
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/index.jsp").forward(request, response);
     }
 
 }
