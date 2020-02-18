@@ -16,7 +16,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet("/list")
+@WebServlet("/admin")
 
 public class ListServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;

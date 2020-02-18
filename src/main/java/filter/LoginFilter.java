@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter({"/"})
+@WebFilter({"/admin", "/user"})
 public class LoginFilter implements Filter {
 
     @Override
@@ -30,7 +30,7 @@ public class LoginFilter implements Filter {
             System.out.println(user.getLogin());
             filterChain.doFilter(request, response);
         } else {
-            response.sendRedirect("/login");
+            request.getRequestDispatcher("/login").forward(request, response);
         }
     }
 

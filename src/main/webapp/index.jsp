@@ -43,7 +43,7 @@
                     </fieldset>
 
                         <div class="container text-left">
-                            <a href="<%=request.getContextPath()%>/list" class="btn btn-success">SignIn</a>
+                            <a href="<%=request.getContextPath()%>/admin" class="btn btn-success">SignIn</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="<%=request.getContextPath()%>/new" class="btn btn-success">SignUp</a>
                         </div>
