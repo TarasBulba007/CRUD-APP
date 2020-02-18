@@ -6,13 +6,10 @@ import service.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/index")
+@WebServlet({"/index", "/login"})
 public class LoginServlet extends HttpServlet {
     private UserService service;
 
@@ -23,25 +20,32 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
-        HttpSession session = request.getSession();
-
+        HttpSession session = request.getSession(true);
         User user = service.getUserByLogin(login);
+        System.out.println(user.getLogin());
 
-        if (service.validateUser(login, password)) {
-            if (user.getRole().equals("user")) {
-                session.setAttribute("login", login);
-                session.setAttribute("role", user.getRole());
-                session.setAttribute("name", user.getName());
-                session.setAttribute("email", user.getEmail());
-                session.setAttribute("phoneNumber", user.getPhoneNumber());
-                session.setAttribute("birthDate", user.getBirthDate());
-                response.sendRedirect("user/userInfoView.jsp");
+        if (login != null && password != null && !login.isEmpty() && !password.isEmpty()) {
+            if (service.validateUser(login, password)) {
+                if (user.getRole().equalsIgnoreCase("user")) {
+                    session.setAttribute("user", user);
+                    session.setAttribute("userName", user.getName());
+                    session.setAttribute("userLogin", user.getLogin());
+                    session.setAttribute("userRole", user.getRole());
+                    session.setAttribute("birthDate", user.getBirthDate());
+                    session.setAttribute("email", user.getEmail());
+                    session.setAttribute("phoneNumber", user.getPhoneNumber());
+                    request.getRequestDispatcher("/user/user-form.jsp").forward(request, response);
+                }
+                if (user.getRole().equals("admin")) {
+                    response.sendRedirect("admin/user-list.jsp");
+                } else {
+                    request.setAttribute("message", "Incorrect input");
+                    doGet(request, response);
+                }
+            } else {
+                request.setAttribute("message", "Incorrect input");
+                doGet(request, response);
             }
-            if (user.getRole().equals("admin")) {
-                response.sendRedirect("webapp/admin/user-list.jsp");
-            }
-        } else {
-            response.sendRedirect(request.getContextPath() + "/InsertServlet");
         }
     }
 

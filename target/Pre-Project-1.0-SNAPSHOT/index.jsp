@@ -14,11 +14,12 @@
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: Green">
         <div>
             <a class="navbar-brand"> CRUD App </a>
+            <jsp:include page="/admin/menu.jsp"></jsp:include>
         </div>
 
-        <ul class="navbar-nav">
+  <%--      <ul class="navbar-nav">
             <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Users</a></li>
-        </ul>
+        </ul>  --%>
     </nav>
 </header>
 <br>
@@ -42,7 +43,7 @@
                     </fieldset>
 
                         <div class="container text-left">
-                            <a href="<%=request.getContextPath()%>/admin/menu.jsp" class="btn btn-success">SignIn</a>
+                            <a href="<%=request.getContextPath()%>/list" class="btn btn-success">SignIn</a>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="<%=request.getContextPath()%>/new" class="btn btn-success">SignUp</a>
                         </div>

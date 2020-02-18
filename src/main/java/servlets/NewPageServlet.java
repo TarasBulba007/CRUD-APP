@@ -22,7 +22,7 @@ public class NewPageServlet extends HttpServlet {
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user-form.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/user-form.jsp");
         dispatcher.forward(request, response);
     }
 }

@@ -10,16 +10,18 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebFilter(filterName = "AdminFilter",
-        urlPatterns = {"/admin/*"})
+        urlPatterns = {"/admin"})
 
 public class AdminFilter implements Filter {
+
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
 
         User user = (User) session.getAttribute("user");
+    //    System.out.println(user.getRole());
         if (user.getRole().equalsIgnoreCase("admin")){
             filterChain.doFilter(request, response);
         } else

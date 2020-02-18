@@ -4,14 +4,14 @@ import model.User;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/*")
+@WebFilter({"/"})
 public class LoginFilter implements Filter {
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -23,18 +23,18 @@ public class LoginFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession(false);
 
-       // User user = (User) session.getAttribute("user");
-        boolean loggedIn = session != null && session.getAttribute("userName") != null && session.getAttribute("userRole") != null;
-        boolean loginRequest = request.getRequestURI().equals((request.getContextPath() + "/LoginServlet"));
-        if (loggedIn || loginRequest) {
+        User user = (User) session.getAttribute("user");
+        String loginURI = request.getContextPath() + "/index";
+        boolean loggedIn = session != null && session.getAttribute("user") != null && session.getAttribute("userRole") != null;
+        if (loggedIn) {
+            System.out.println(user.getLogin());
             filterChain.doFilter(request, response);
         } else {
-            response.sendRedirect((request.getContextPath() + "/LoginServlet"));
+            response.sendRedirect("/login");
         }
     }
 
     @Override
     public void destroy() {
-
     }
 }

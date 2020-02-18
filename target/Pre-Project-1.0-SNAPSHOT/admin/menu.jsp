@@ -1,6 +1,6 @@
 
 ||
-<a href="${pageContext.request.contextPath}/admin/user-list.jsp">
+<a href="${pageContext.request.contextPath}/list">
     Manager
 </a>
 ||
@@ -17,4 +17,4 @@
 </a>
 
 &nbsp;
-<span style="color:red">[ ${loginedUser.userName} ]</span>
+<span style="color:red">[ ${userName} ]</span>

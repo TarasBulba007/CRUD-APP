@@ -45,7 +45,8 @@ public class ListServlet extends HttpServlet {
             System.out.println(el);
         }
         request.setAttribute("users", users);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("webapp/admin/user-list.jsp");
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("admin/user-list.jsp");
 
         dispatcher.forward(request, response);
     }
