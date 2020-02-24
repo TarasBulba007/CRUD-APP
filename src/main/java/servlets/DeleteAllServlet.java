@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/deleteAll")
+@WebServlet("/admin/deleteAll")
 public class DeleteAllServlet extends HttpServlet {
     private UserService service;
 

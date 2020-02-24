@@ -36,7 +36,7 @@ public class LoginServlet extends HttpServlet {
             String role = (String) session.getAttribute("userRole");
 
             if (role.equalsIgnoreCase("admin")){
-                response.sendRedirect("/list");
+                response.sendRedirect("/admin/list");
             } else if (role.equalsIgnoreCase("user")){
                 response.sendRedirect("/user");
             } else {

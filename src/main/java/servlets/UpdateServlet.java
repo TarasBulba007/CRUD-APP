@@ -14,7 +14,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.time.LocalDate;
 
-@WebServlet("/update")
+@WebServlet({"/update", "/admin/update"})
 public class UpdateServlet extends HttpServlet {
     private UserService service;
 
@@ -53,7 +53,7 @@ public class UpdateServlet extends HttpServlet {
         System.out.println(var.getBirthDate());
         service.updateUser(var);
         if (var.getRole().equalsIgnoreCase("admin")){
-            response.sendRedirect("/list");
+            response.sendRedirect("/admin/list");
         } else {
             response.sendRedirect("/user");
         }

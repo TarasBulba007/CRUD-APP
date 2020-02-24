@@ -11,8 +11,7 @@ import java.io.IOException;
 
 import static java.util.Objects.nonNull;
 
-@WebFilter(filterName = "AdminFilter",
-       urlPatterns = {"/list", "/admin/*"})
+@WebFilter("/admin/*")
 public class AdminFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

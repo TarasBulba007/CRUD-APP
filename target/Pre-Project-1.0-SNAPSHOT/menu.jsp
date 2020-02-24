@@ -1,6 +1,6 @@
 
 ||
-<a href="${pageContext.request.contextPath}/list">
+<a href="${pageContext.request.contextPath}/admin/list">
     Manager
 </a>
 ||
