@@ -15,10 +15,11 @@
         <div>
             <a class="navbar-brand"> CRUD App </a>
         </div>
+            <div>
+                <a class="navbar-brand"> My First CRUD APP </a>
+                <jsp:include page="../menu.jsp"></jsp:include>
+            </div>
 
-        <ul class="navbar-nav">
-            <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Users</a></li>
-        </ul>
     </nav>
 </header>
 <br>

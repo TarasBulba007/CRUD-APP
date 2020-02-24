@@ -110,7 +110,7 @@ public class UserJdbcDAO implements UserDAO {
                     String email = res.getString("email");
                     String phoneNumber = res.getString("phoneNumber");
                     LocalDate birthDate = res.getDate("birthDate").toLocalDate();
-                    user = new User(login, password, name, role, email, phoneNumber, birthDate);
+                    user = new User(login, password, role, name, email, phoneNumber, birthDate);
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -144,9 +144,10 @@ public class UserJdbcDAO implements UserDAO {
     @Override
     public void updateUser(User user)  {
       //  boolean updated = false;
-        try (PreparedStatement statement = connection.prepareStatement("UPDATE users SET login=?, password=?, name=?, email=?, phoneNumber=?, STR_TO_DATE(birthDate, 'dd.MM.yyyy')=? WHERE id=?");) {
+        try (PreparedStatement statement = connection.prepareStatement("UPDATE users SET login=?, password=?, name=?, email=?, phoneNumber=?, birthDate=? WHERE id=?");) {
             statement.setString(1, user.getLogin());
             statement.setString(2, user.getPassword());
+
             statement.setString(3, user.getName());
             statement.setString(4, user.getEmail());
             statement.setString(5, user.getPhoneNumber());

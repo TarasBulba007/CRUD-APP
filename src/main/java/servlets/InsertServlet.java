@@ -48,8 +48,8 @@ public class InsertServlet extends HttpServlet {
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
         LocalDate birthDate = LocalDate.parse(request.getParameter("birthDate"));
-        User newUser = new User(login, password, name, role, email, phoneNumber, birthDate);
-        System.out.println("new USer: " + newUser.getId() + " " + newUser.getLogin() + " " + newUser.getName() + " " + newUser.getEmail() + " " + newUser.getBirthDate().toString());
+        User newUser = new User(login, password, role, name, email, phoneNumber, birthDate);
+        System.out.println("new User: " + newUser.getId() + " " + newUser.getLogin() + " " + newUser.getName() + " " + newUser.getEmail() + " " + newUser.getBirthDate().toString());
         service.createUser(newUser);
         response.sendRedirect("list");
     }

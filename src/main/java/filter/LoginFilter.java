@@ -1,6 +1,8 @@
 package filter;
 
-import model.User;
+
+import service.UserService;
+import service.UserServiceImpl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -9,32 +11,33 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter({"/admin", "/user"})
+@WebFilter({"/login", "/"})
 public class LoginFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpSession session = request.getSession(false);
+        HttpServletResponse resp = (HttpServletResponse) servletResponse;
 
-        User user = (User) session.getAttribute("user");
-        String loginURI = request.getContextPath() + "/index";
-        boolean loggedIn = session != null && session.getAttribute("user") != null && session.getAttribute("userRole") != null;
-        if (loggedIn) {
-            System.out.println(user.getLogin());
-            filterChain.doFilter(request, response);
+        HttpSession session = ((HttpServletRequest) servletRequest).getSession();
+        String role = (String) session.getAttribute("userRole");
+
+        if (role.equalsIgnoreCase("admin")){
+            resp.sendRedirect("/list");
+        } else if (role.equalsIgnoreCase("user")){
+            resp.sendRedirect("/user");
         } else {
-            request.getRequestDispatcher("/login").forward(request, response);
+            session.invalidate();
+            resp.sendRedirect("/index");
         }
+
     }
 
     @Override
     public void destroy() {
+
     }
 }

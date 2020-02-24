@@ -1,3 +1,4 @@
+C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\IndexServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\LoginServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\service\UserServiceImpl.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\NewPageServlet.java
@@ -16,5 +17,6 @@ C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\DAO\User
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\DAO\UserHibernateDAO.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\model\User.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\util\DBHelper.java
+C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\LogoutServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\service\UserService.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\filter\AdminFilter.java

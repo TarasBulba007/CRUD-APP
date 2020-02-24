@@ -6,51 +6,52 @@ import service.UserServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.text.ParseException;
 
-@WebServlet({"/index", "/login"})
+@WebServlet("/index")
 public class LoginServlet extends HttpServlet {
     private UserService service;
 
+    @Override
     public void init() {
         service = UserServiceImpl.getUserService();
     }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        HttpSession session = request.getSession(true);
-        User user = service.getUserByLogin(login);
-        System.out.println(user.getLogin());
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        doGet(req, resp);
+    }
 
-        if (login != null && password != null && !login.isEmpty() && !password.isEmpty()) {
-            if (service.validateUser(login, password)) {
-                if (user.getRole().equalsIgnoreCase("user")) {
-                    session.setAttribute("user", user);
-                    session.setAttribute("userName", user.getName());
-                    session.setAttribute("userLogin", user.getLogin());
-                    session.setAttribute("userRole", user.getRole());
-                    session.setAttribute("birthDate", user.getBirthDate());
-                    session.setAttribute("email", user.getEmail());
-                    session.setAttribute("phoneNumber", user.getPhoneNumber());
-                    request.getRequestDispatcher("/user/user-form.jsp").forward(request, response);
-                }
-                if (user.getRole().equals("admin")) {
-                    response.sendRedirect("admin/user-list.jsp");
-                } else {
-                    request.setAttribute("message", "Incorrect input");
-                    doGet(request, response);
-                }
-            } else {
-                request.setAttribute("message", "Incorrect input");
-                doGet(request, response);
-            }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)  {
+        try {
+            checkLogin(request, response);
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/index.jsp").forward(request, response);
+    public void checkLogin(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
+        String login = req.getParameter("login");
+        String password = req.getParameter("password");
+        User user = service.getUserByLogin(login);
+
+        if (user != null && service.validateUser(user.getLogin(), password)) {
+                HttpSession session = req.getSession();
+                session.setAttribute("user", user);
+                session.setAttribute("id", user.getId());
+                session.setAttribute("userRole", user.getRole());
+                resp.sendRedirect("/login");
+        } else {
+            resp.sendRedirect("accessDeniedView.jsp");
+        }
     }
 
 }

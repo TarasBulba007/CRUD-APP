@@ -1,5 +1,6 @@
 package servlets;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,25 +12,26 @@ import java.util.Enumeration;
 
 @WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
+    //private static final long  serialVersionUID = 1;
 
     public LogoutServlet() {
-        super();
-    }
+            }
 
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        HttpSession session=req.getSession(true);
-        Enumeration attributeNames=session.getAttributeNames(); //get all attributeNames associated with session
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        while(attributeNames.hasMoreElements()) //destroy session
-        {
-            String name=(String)attributeNames.nextElement();
-            String value=session.getAttribute(name).toString();
-            session.removeAttribute(name);
+        req.getSession().invalidate();
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/logout.jsp");
+        dispatcher.forward(req, resp);
+       //final HttpSession session = req.getSession();
+       //session.removeAttribute("user");
+       //session.removeAttribute("name");
+       //session.removeAttribute("password");
+       //session.removeAttribute("userLogin");
+       //session.removeAttribute("userRole");
+       //req.getRequestDispatcher("/index.jsp").forward(req, resp);
 
-            System.out.println(name+"="+value+"cleared");
-        }
-        resp.sendRedirect(req.getContextPath() + "/index");
+
     }
 
     @Override

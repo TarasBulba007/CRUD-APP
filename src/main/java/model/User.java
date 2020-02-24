@@ -48,7 +48,7 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public User(String login, String password, String name, String role, String email, String phoneNumber, LocalDate birthDate) {
+    public User(String login, String password, String role, String name, String email, String phoneNumber, LocalDate birthDate) {
         this.login = login;
         this.password = password;
         this.role = role;

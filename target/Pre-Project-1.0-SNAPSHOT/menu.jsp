@@ -4,11 +4,11 @@
     Manager
 </a>
 ||
-<a href="${pageContext.request.contextPath}/userInfo">
+<a href="${pageContext.request.contextPath}/user">
     User Info
 </a>
 ||
-<a href="${pageContext.request.contextPath}/login">
+<a href="${pageContext.request.contextPath}/">
     Login
 </a>
 ||
@@ -17,4 +17,4 @@
 </a>
 
 &nbsp;
-<span style="color:red">[ ${userName} ]</span>
+<span style="color:red">[ ${user.login} ]</span>

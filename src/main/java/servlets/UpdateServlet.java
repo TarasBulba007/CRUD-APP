@@ -40,13 +40,22 @@ public class UpdateServlet extends HttpServlet {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         String name = request.getParameter("name");
-        String role = request.getParameter("role");
+        String role = "";
+        if (name.equalsIgnoreCase("Taras") && password.equalsIgnoreCase("Rdfyn142857")){
+            role = "admin";
+        } else {
+            role = "user";
+        }
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
         LocalDate birthDate = LocalDate.parse(request.getParameter("birthDate"));
-        User var = new User(id, login, password, name, role, email, phoneNumber, birthDate);
+        User var = new User(id, login, password, role, name,  email, phoneNumber, birthDate);
         System.out.println(var.getBirthDate());
         service.updateUser(var);
-        response.sendRedirect("list");
+        if (var.getRole().equalsIgnoreCase("admin")){
+            response.sendRedirect("/list");
+        } else {
+            response.sendRedirect("/user");
+        }
     }
 }

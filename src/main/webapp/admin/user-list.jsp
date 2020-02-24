@@ -15,12 +15,8 @@
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: Green">
         <div>
             <a class="navbar-brand"> My First CRUD APP </a>
-            <jsp:include page="menu.jsp"></jsp:include>
+            <jsp:include page="../menu.jsp"></jsp:include>
         </div>
-
-  <%--      <ul class="navbar-nav">
-            <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Users</a></li>
-        </ul> --%>
     </nav>
 </header>
 <br>
@@ -71,8 +67,11 @@
                     <td>
                         <c:out value="${user.birthDate}"/>
                     </td>
-                    <td><a href="edit?id=<c:out value='${user.id}' />">Edit</a> &nbsp;&nbsp;&nbsp;&nbsp; <a
-                            href="delete?id=<c:out value='${user.id}' />">Delete</a></td>
+                    <td>
+                        <a href="edit?id=<c:out value='${user.id}' />">Edit</a>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="delete?id=<c:out value='${user.id}' />">Delete</a>
+                    </td>
                 </tr>
             </c:forEach>
             </tbody>

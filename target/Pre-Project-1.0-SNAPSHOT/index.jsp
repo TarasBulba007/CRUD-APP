@@ -14,36 +14,29 @@
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: Green">
         <div>
             <a class="navbar-brand"> CRUD App </a>
-            <jsp:include page="/admin/menu.jsp"></jsp:include>
+            <jsp:include page="/menu.jsp"></jsp:include>
         </div>
 
-  <%--      <ul class="navbar-nav">
-            <li><a href="<%=request.getContextPath()%>/list" class="nav-link">Users</a></li>
-        </ul>  --%>
     </nav>
 </header>
 <br>
 <div class="container col-md-5">
     <div class="card">
         <div class="card-body">
-            <c:if test="${user != null}">
-            <form action="update" method="post">
-                </c:if>
-                <c:if test="${user == null}">
-                <form action="insert" method="post">
-                    </c:if>
+                <form action="/index" method="POST">
 
-
-                    <fieldset class="form-group">
-                        <label>User Login</label> <input type="text" value="<c:out value='${user.login}' />" class="form-control" name="login">
+                 <fieldset class="form-group">
+                        <label>User Login</label> <input type="text" class="form-control" name="login" value="">
                     </fieldset>
 
                     <fieldset class="form-group">
-                        <label>User Password</label> <input type="text" value="<c:out value='${user.password}' />" class="form-control" name="password">
+                        <label>User Password</label> <input type="password" class="form-control" name="password" value="" >
                     </fieldset>
+
+
 
                         <div class="container text-left">
-                            <a href="<%=request.getContextPath()%>/admin" class="btn btn-success">SignIn</a>
+                            <button type="submit" class="btn btn-success">SignIn</button>
                             &nbsp;&nbsp;&nbsp;&nbsp;
                             <a href="<%=request.getContextPath()%>/new" class="btn btn-success">SignUp</a>
                         </div>

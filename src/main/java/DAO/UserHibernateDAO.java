@@ -134,7 +134,6 @@ public class UserHibernateDAO implements UserDAO {
             Query query = session.createQuery("SELECT i from " + User.class.getName() + " i WHERE i.login=:login");
             query.setParameter("login", login);
             user = (User) query.uniqueResult();
-            //    session.getTransaction().commit();
         } catch (SessionException e) {
             e.printStackTrace();
         }
