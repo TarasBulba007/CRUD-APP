@@ -1,12 +1,11 @@
-C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\IndexServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\LoginServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\service\UserServiceImpl.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\NewPageServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\DAO\UserDaoFactoryIml.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\DeleteAllServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\EditServlet.java
-C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\filter\LoginFilter.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\UpdateServlet.java
+C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\filter\UserFilter.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\ListServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\DeleteUserServlet.java
 C:\Users\Usver\Desktop\Java_Learn\MentorWeb\PreProjectNew\src\main\java\servlets\UserInfoServlet.java

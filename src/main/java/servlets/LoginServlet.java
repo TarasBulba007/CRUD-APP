@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
 
 @WebServlet("/index")
 public class LoginServlet extends HttpServlet {
@@ -33,24 +32,36 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)  {
         try {
             checkLogin(request, response);
+            HttpSession session = request.getSession();
+            String role = (String) session.getAttribute("userRole");
+
+            if (role.equalsIgnoreCase("admin")){
+                response.sendRedirect("/list");
+            } else if (role.equalsIgnoreCase("user")){
+                response.sendRedirect("/user");
+            } else {
+                session.invalidate();
+                response.sendRedirect("/accessDeniedView.jsp");
+            }
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
 
-    public void checkLogin(HttpServletRequest req, HttpServletResponse resp) throws SQLException, IOException {
-        String login = req.getParameter("login");
-        String password = req.getParameter("password");
+    public void checkLogin(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+
+        HttpSession session =  request.getSession();
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
         User user = service.getUserByLogin(login);
 
         if (user != null && service.validateUser(user.getLogin(), password)) {
-                HttpSession session = req.getSession();
                 session.setAttribute("user", user);
                 session.setAttribute("id", user.getId());
                 session.setAttribute("userRole", user.getRole());
-                resp.sendRedirect("/login");
+
         } else {
-            resp.sendRedirect("/index.jsp");
+            response.sendRedirect("/index.jsp");
         }
     }
 
