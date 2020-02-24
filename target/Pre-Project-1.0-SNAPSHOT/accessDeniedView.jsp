@@ -17,7 +17,7 @@
         </div>
 
         <ul class="navbar-nav">
-            <li><a href="<%=request.getContextPath()%>/index" class="nav-link">Registration</a></li>
+            <li><a href="<%=request.getContextPath()%>/index.jsp" class="nav-link">Registration</a></li>
         </ul>
     </nav>
 </header>

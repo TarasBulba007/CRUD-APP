@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("userRole", user.getRole());
                 resp.sendRedirect("/login");
         } else {
-            resp.sendRedirect("accessDeniedView.jsp");
+            resp.sendRedirect("/index.jsp");
         }
     }
 
