@@ -51,6 +51,6 @@ public class InsertServlet extends HttpServlet {
         User newUser = new User(login, password, role, name, email, phoneNumber, birthDate);
         System.out.println("new User: " + newUser.getId() + " " + newUser.getLogin() + " " + newUser.getName() + " " + newUser.getEmail() + " " + newUser.getBirthDate().toString());
         service.createUser(newUser);
-        response.sendRedirect("list");
+        response.sendRedirect("/user");
     }
 }

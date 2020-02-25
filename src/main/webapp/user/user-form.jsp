@@ -27,7 +27,7 @@
     <div class="card">
         <div class="card-body">
             <c:if test="${user != null}">
-            <form action="update" method="post">
+            <form action="upgrade" method="post">
                 </c:if>
                 <c:if test="${user == null}">
                 <form action="insert" method="post">

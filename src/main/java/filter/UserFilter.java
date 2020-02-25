@@ -14,8 +14,7 @@ import java.io.IOException;
 
 import static java.util.Objects.nonNull;
 
-@WebFilter(filterName = "UserFilter",
-        urlPatterns = {"/user/*", "/edit", "/update"})
+@WebFilter("/user/*")
 public class UserFilter implements Filter {
 
     @Override

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet({"/edit", "/admin/edit"})
+@WebServlet("/admin/redach")
 public class EditServlet extends HttpServlet {
     private UserService service;
 
@@ -38,7 +38,7 @@ public class EditServlet extends HttpServlet {
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
         Long id = Long.parseLong(request.getParameter("id"));
         User existingUser = service.getUserById(id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/user/user-form.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/admin/UserFormForAdmin.jsp");
         request.setAttribute("user", existingUser);
         dispatcher.forward(request, response);
     }
